@@ -1,0 +1,23 @@
+<Project Sdk="Microsoft.NET.Sdk.Worker">
+
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <UserSecretsId>dotnet-DuckDDNSSync.Service-0f5b00ca-d42f-4a1f-8647-74a36278b69e</UserSecretsId>
+    <ApplicationIcon>..\DuckDDNSSync\Assets\ducky_icon.ico</ApplicationIcon>
+    <Company>IOSoluciones</Company>
+    <Product>DuckDNS Sync</Product>
+    <Authors>Carlos A. Pola Díaz</Authors>
+    <Copyright>Copyright © IOSoluciones</Copyright>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Extensions.Hosting" Version="10.0.12" />
+    <PackageReference Include="Microsoft.Extensions.Hosting.WindowsServices" Version="10.0.12" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\DuckDDNSSync.Core\DuckDDNSSync.Core.csproj" />
+  </ItemGroup>
+</Project>

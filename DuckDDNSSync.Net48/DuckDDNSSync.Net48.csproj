@@ -1,0 +1,55 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net48</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <LangVersion>latest</LangVersion>
+    <UseWPF>true</UseWPF>
+    <UseWindowsForms>true</UseWindowsForms>
+    <ApplicationIcon>..\DuckDDNSSync\Assets\ducky_icon.ico</ApplicationIcon>
+    <Company>IOSoluciones</Company>
+    <Product>DuckDNS Sync</Product>
+    <Authors>Carlos A. Pola Díaz</Authors>
+    <Copyright>Copyright © IOSoluciones</Copyright>
+    <Version>1.0.1</Version>
+    <RootNamespace>DuckDDNSSync</RootNamespace>
+  </PropertyGroup>
+
+  <!-- Mismo código fuente que el proyecto DuckDDNSSync (net10.0-windows), enlazado
+       en vez de copiado, para no mantener dos copias de la UI. -->
+  <ItemGroup>
+    <ApplicationDefinition Include="..\DuckDDNSSync\App.xaml" Link="App.xaml" />
+    <Compile Include="..\DuckDDNSSync\App.xaml.cs" Link="App.xaml.cs">
+      <DependentUpon>App.xaml</DependentUpon>
+    </Compile>
+
+    <Page Include="..\DuckDDNSSync\MainWindow.xaml" Link="MainWindow.xaml" />
+    <Compile Include="..\DuckDDNSSync\MainWindow.xaml.cs" Link="MainWindow.xaml.cs">
+      <DependentUpon>MainWindow.xaml</DependentUpon>
+    </Compile>
+
+    <Page Include="..\DuckDDNSSync\AboutWindow.xaml" Link="AboutWindow.xaml" />
+    <Compile Include="..\DuckDDNSSync\AboutWindow.xaml.cs" Link="AboutWindow.xaml.cs">
+      <DependentUpon>AboutWindow.xaml</DependentUpon>
+    </Compile>
+
+    <Compile Include="..\DuckDDNSSync\ServiceManager.cs" Link="ServiceManager.cs" />
+    <Compile Include="..\DuckDDNSSync\StartupManager.cs" Link="StartupManager.cs" />
+    <Compile Include="..\DuckDDNSSync\TrayIconManager.cs" Link="TrayIconManager.cs" />
+    <Compile Include="..\DuckDDNSSync\AssemblyInfo.cs" Link="AssemblyInfo.cs" />
+
+    <Resource Include="..\DuckDDNSSync\Assets\ducky_icon.png" Link="Assets\ducky_icon.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="System.ServiceProcess.ServiceController" Version="10.0.12" />
+    <PackageReference Include="WPF-UI" Version="4.3.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\DuckDDNSSync.Core\DuckDDNSSync.Core.csproj" />
+  </ItemGroup>
+
+</Project>

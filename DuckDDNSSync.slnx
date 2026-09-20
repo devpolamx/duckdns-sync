@@ -1,0 +1,6 @@
+<Solution>
+  <Project Path="DuckDDNSSync.Core/DuckDDNSSync.Core.csproj" />
+  <Project Path="DuckDDNSSync.Net48/DuckDDNSSync.Net48.csproj" />
+  <Project Path="DuckDDNSSync.Service/DuckDDNSSync.Service.csproj" />
+  <Project Path="DuckDDNSSync/DuckDDNSSync.csproj" />
+</Solution>

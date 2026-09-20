@@ -1,0 +1,139 @@
+<ui:FluentWindow x:Class="DuckDDNSSync.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:DuckDDNSSync"
+        xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
+        mc:Ignorable="d"
+        Title="DuckDNS Sync" Height="445" Width="720" WindowStartupLocation="CenterScreen"
+        ExtendsContentIntoTitleBar="True" WindowBackdropType="Mica">
+    <DockPanel>
+        <ui:TitleBar x:Name="AppTitleBar" DockPanel.Dock="Top" Title="DuckDNS Sync" ShowMaximize="False">
+            <ui:TitleBar.Icon>
+                <ui:ImageIcon Source="Assets/ducky_icon.png"/>
+            </ui:TitleBar.Icon>
+            <ui:TitleBar.TrailingContent>
+                <Menu Background="Transparent" VerticalAlignment="Center">
+                    <MenuItem Header="Menú">
+                        <MenuItem Header="Minimizar" Click="MinimizeMenuItem_Click"/>
+                        <Separator/>
+                        <MenuItem Header="Acerca de" Click="AboutMenuItem_Click"/>
+                        <Separator/>
+                        <MenuItem Header="Salir" Click="ExitMenuItem_Click"/>
+                    </MenuItem>
+                </Menu>
+            </ui:TitleBar.TrailingContent>
+        </ui:TitleBar>
+
+        <StatusBar DockPanel.Dock="Bottom">
+            <StatusBarItem>
+                <TextBlock x:Name="StatusText" Text="Sin sincronizar todavía."/>
+            </StatusBarItem>
+        </StatusBar>
+
+        <StackPanel DockPanel.Dock="Right" Margin="8" Width="244">
+            <Image Source="Assets/ducky_icon.png" Width="90" Stretch="Uniform"/>
+
+            <CheckBox x:Name="StartupCheckBox" Margin="0,16,0,0" Width="240">
+                <TextBlock TextWrapping="Wrap" Width="202"><Run Language="es-mx" Text="Ejecutar al iniciar sesión en Windows"/></TextBlock>
+            </CheckBox>
+
+            <CheckBox x:Name="ServiceCheckBox" Margin="0,16,0,0
+                      " Checked="ServiceCheckBox_Changed" Unchecked="ServiceCheckBox_Changed" Width="244">
+                <TextBlock Text="Iniciar como servicio" TextWrapping="Wrap" Width="202"/>
+            </CheckBox>
+            <TextBlock x:Name="ServiceStatusText" TextWrapping="Wrap" FontSize="11" Width="240"
+                       Foreground="{DynamicResource TextFillColorSecondaryBrush}" Height="44"
+                       ><Run Text="Sincroniza aunque no"/><Run Language="es-mx" Text=" se"/><Run Text=" haya "/><Run Language="es-mx" Text="iniciado"/><Run Text=" sesión (pedirá permisos de administrador)."/></TextBlock>
+            <StackPanel>
+                <TextBlock Text="Tema oscuro" Margin="0,0,0,4"/>
+                <ui:ToggleSwitch x:Name="DarkThemeToggle" Checked="DarkThemeToggle_Changed" Unchecked="DarkThemeToggle_Changed"/>
+            </StackPanel>
+        </StackPanel>
+
+        <TabControl Margin="8" Width="424">
+            <TabItem Header="Configuración">
+                <StackPanel Margin="8">
+                    <StackPanel Orientation="Horizontal" Margin="0,0,0,8" Width="414">
+                        <TextBlock Text="Dominio(s):" Width="90" VerticalAlignment="Top" Margin="0,4,0,0"/>
+                        <StackPanel Width="324">
+                            <ItemsControl x:Name="DomainsItemsControl">
+                                <ItemsControl.ItemsPanel>
+                                    <ItemsPanelTemplate>
+                                        <WrapPanel/>
+                                    </ItemsPanelTemplate>
+                                </ItemsControl.ItemsPanel>
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate>
+                                        <Border Background="{DynamicResource CardBackgroundFillColorDefaultBrush}"
+                                                BorderBrush="{DynamicResource CardStrokeColorDefaultBrush}" BorderThickness="1"
+                                                CornerRadius="10" Padding="8,3" Margin="0,0,6,6">
+                                            <StackPanel Orientation="Horizontal">
+                                                <TextBlock Text="{Binding}" VerticalAlignment="Center"/>
+                                                <Button Content="×" Tag="{Binding}" Width="18" Height="18" Margin="6,0,0,0"
+                                                        Padding="0" FontWeight="Bold" Background="Transparent"
+                                                        BorderThickness="0" Cursor="Hand" ToolTip="Quitar"/>
+                                            </StackPanel>
+                                        </Border>
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
+                            <StackPanel Orientation="Horizontal" Width="292">
+                                <ui:TextBox x:Name="DomainInputTextBox" Width="190" KeyDown="DomainInputTextBox_KeyDown"
+                                            PlaceholderText="midominio"/>
+                                <TextBlock Text=".duckdns.org" VerticalAlignment="Center" Margin="6,0,0,0"
+                                           Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
+                            </StackPanel>
+                            <TextBlock Text="Escribe el nombre de tu dominio (sin .duckdns.org) y presiona Enter. Si tienes más de uno, repite: escribe el siguiente y presiona Enter otra vez. Para quitar uno, haz clic en la × de su etiqueta."
+                                       TextWrapping="Wrap" FontSize="11" Foreground="{DynamicResource TextFillColorSecondaryBrush}" Margin="0,4,0,0" Width="317"/>
+                        </StackPanel>
+                    </StackPanel>
+
+                    <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
+                        <TextBlock Text="Token:" Width="90" VerticalAlignment="Center"/>
+                        <ui:TextBox x:Name="TokenTextBox" Width="314" PlaceholderText="Token de Duck DNS"/>
+                    </StackPanel>
+
+                    <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
+                        <TextBlock Text="Intervalo:" Width="90" VerticalAlignment="Center"/>
+                        <ComboBox x:Name="IntervalComboBox" Width="120" SelectedValuePath="Tag">
+                            <ComboBoxItem Content="5 minutos" Tag="5"/>
+                            <ComboBoxItem Content="10 minutos" Tag="10"/>
+                            <ComboBoxItem Content="15 minutos" Tag="15"/>
+                            <ComboBoxItem Content="30 minutos" Tag="30"/>
+                            <ComboBoxItem Content="60 minutos" Tag="60"/>
+                        </ComboBox>
+                    </StackPanel>
+
+                    <StackPanel Orientation="Horizontal" Margin="90,8,0,0">
+                        <ui:Button x:Name="SaveButton" Content="Guardar" Width="90" Margin="0,0,8,0"
+                                   Appearance="Primary" Click="SaveButton_Click"/>
+                        <Button x:Name="SyncNowButton" Content="Sincronizar ahora" Width="130" Click="SyncNowButton_Click"/>
+                    </StackPanel>
+                </StackPanel>
+            </TabItem>
+
+            <TabItem Header="Log">
+                <TextBox x:Name="LogTextBox" Margin="8" IsReadOnly="True" TextWrapping="Wrap"
+                         AcceptsReturn="True" VerticalScrollBarVisibility="Auto"
+                         FontFamily="Consolas" FontSize="12"/>
+            </TabItem>
+
+            <TabItem Header="Donación">
+                <StackPanel Margin="16">
+                    <TextBlock FontWeight="SemiBold" FontSize="16" Margin="0,0,0,4"><Run Text="¿Te sirvió DuckDNS"/><Run Language="es-mx" Text=" "/><Run Text="Sync?"/></TextBlock>
+                    <TextBlock TextWrapping="Wrap" Margin="0,0,0,16" Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                               Text="Si quieres apoyar el desarrollo, puedes hacerlo por cualquiera de estos medios:"/>
+
+                    <Button Content="Buy Me a Coffee" Tag="https://buymeacoffee.com/cpoladiazd"
+                            Click="DonationLink_Click" HorizontalAlignment="Left" Padding="12,8" Margin="0,0,0,8" Cursor="Hand"/>
+                    <Button Content="PayPal" Tag="https://www.paypal.me/poladevmx"
+                            Click="DonationLink_Click" HorizontalAlignment="Left" Padding="12,8" Margin="0,0,0,8" Cursor="Hand"/>
+                    <Button Content="GitHub Sponsors" Tag="https://github.com/sponsors/devpolamx"
+                            Click="DonationLink_Click" HorizontalAlignment="Left" Padding="12,8" Cursor="Hand"/>
+                </StackPanel>
+            </TabItem>
+        </TabControl>
+    </DockPanel>
+</ui:FluentWindow>
