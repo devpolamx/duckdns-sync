@@ -3,6 +3,7 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Windows;
+using System.Windows.Threading;
 using DuckDDNSSync.Core;
 using Wpf.Ui.Appearance;
 
@@ -15,6 +16,7 @@ namespace DuckDDNSSync
         private readonly TrayIconManager _tray;
         private readonly ObservableCollection<string> _domainTags = new();
         private readonly List<string> _logLines = new();
+        private readonly DispatcherTimer _logPollTimer = new() { Interval = TimeSpan.FromSeconds(5) };
         private bool _isExiting;
         private bool _loadingTheme;
         private bool _loadingServiceCheckbox;
@@ -53,6 +55,12 @@ namespace DuckDDNSSync
 
             _logLines.AddRange(AppLog.ReadToday());
             RenderLog();
+
+            // Si el servicio de Windows corre en paralelo, escribe en el mismo
+            // log.txt compartido; esto refleja esas líneas aquí sin que el usuario
+            // tenga que cerrar y reabrir la ventana para verlas.
+            _logPollTimer.Tick += (_, _) => PollExternalLog();
+            _logPollTimer.Start();
 
             // Antes de cada tick automático se reconfirma en vivo si el servicio de
             // Windows real ya está corriendo (aunque el estado mostrado en la UI
@@ -102,6 +110,7 @@ namespace DuckDDNSSync
         private void ExitApplication()
         {
             _isExiting = true;
+            _logPollTimer.Stop();
             _scheduler.Stop();
             _tray.Dispose();
             Close();
@@ -282,6 +291,17 @@ namespace DuckDDNSSync
         {
             LogTextBox.Text = string.Join(Environment.NewLine, _logLines);
             LogTextBox.ScrollToEnd();
+        }
+
+        private void PollExternalLog()
+        {
+            var onDisk = AppLog.ReadToday();
+            if (onDisk.Count == _logLines.Count) return;
+
+            _logLines.Clear();
+            _logLines.AddRange(onDisk);
+            if (_logLines.Count > 200) _logLines.RemoveRange(0, _logLines.Count - 200);
+            RenderLog();
         }
     }
 }

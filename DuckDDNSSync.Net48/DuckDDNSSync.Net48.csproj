@@ -13,7 +13,7 @@
     <Product>DuckDNS Sync</Product>
     <Authors>Carlos A. Pola Díaz</Authors>
     <Copyright>Copyright © IOSoluciones</Copyright>
-    <Version>1.0.1</Version>
+    <Version>1.0.7</Version>
     <RootNamespace>DuckDDNSSync</RootNamespace>
   </PropertyGroup>
 
