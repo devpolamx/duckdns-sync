@@ -1,4 +1,4 @@
-# DuckDDNSSync
+# DuckDNS-Sync
 
 Servicio ligero para sincronizar la IP pública con DuckDNS.
 
