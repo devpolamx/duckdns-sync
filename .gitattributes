@@ -47,5 +47,6 @@
 #*.PDF   diff=astextplain
 #*.rtf   diff=astextplain
 #*.RTF   diff=astextplain
-installer/** filter=lfs diff=lfs merge=lfs -text
-*.exe filter=lfs diff=lfs merge=lfs -text
+# installer/ ya no se trackea en Git (ver .gitignore) — son binarios grandes,
+# regenerables con los scripts .iss, sin motivo para versionarlos. LFS los
+# dejaba como punteros rotos cada que el objeto no sincronizaba bien.
