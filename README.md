@@ -4,18 +4,19 @@ Servicio ligero para sincronizar la IP pública con DuckDNS.
 
 Descripción
 -----------
-DuckDDNSSync es una pequeña aplicación y servicio en .NET que mantiene actualizado automáticamente un registro en DuckDNS con la IP pública de la máquina donde se ejecuta. Está diseñada para ejecutarse como un worker service (.NET 10) o como una aplicación de escritorio ligera según la configuración del proyecto en esta solución.
+DuckDNS-Sync es una pequeña aplicación y servicio en .NET que mantiene actualizado automáticamente un registro en DuckDNS con la IP pública de la máquina donde se ejecuta. Está diseñada para ejecutarse como un worker service (.NET 10) o como una aplicación de escritorio ligera según la configuración del proyecto en esta solución.
 
 Características
 ---------------
 - Consulta periódica de la IP pública.
 - Actualización automática del registro DuckDNS cuando cambia la IP.
 - Configurable (dominio, token, intervalo).
-- Ligera y fácil de desplegar en Windows o en entornos compatibles con .NET 10.
+- Ligera y fácil de desplegar en Windows o en entornos compatibles con .NET 10 o .NET 4.8.
 
 Requisitos
 ----------
 - .NET 10 SDK (para compilar y ejecutar el worker service).
+- .NET Framework 4.8 (si se desea ejecutar como aplicación de escritorio).
 - Conexión a Internet.
 - Una cuenta y un dominio en DuckDNS (https://www.duckdns.org/).
 
